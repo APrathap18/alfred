@@ -3,7 +3,7 @@ import modules.listen as listen
 import speech_recognition as sr
 import time
 
-# Recognizer and mic instances
+# Recognizer and mic instances handle recording, capturing, and processing audio
 recognizer = sr.Recognizer()
 mic = sr.Microphone()
 
