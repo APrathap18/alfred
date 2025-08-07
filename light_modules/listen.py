@@ -3,7 +3,7 @@ import whisper
 import io
 import numpy as np
 import soundfile as sf
-import light_modules.control_lights
+import light_modules.control_lights as control_lights
 
 #***************************************************************
 # FILE: listen
@@ -17,13 +17,6 @@ import light_modules.control_lights
 # GITHUB: https://github.com/APrathap18/lumos
 #***************************************************************
 
-# Speech recognizer handles capturing and processing audio input
-recognizer = sr.Recognizer()
-
-# Speech-to-text model
-# Using base due to RAM limitations on Pi
-model = whisper.load_model("base")
-
 """
 **********************************************
 Title:          callback
@@ -34,9 +27,9 @@ Description:    Takes in audio, processes and
                 be read
 **********************************************
 """
-def callback(recognizer, raw_audio):
+def callback(recognizer, raw_audio, model):
     # Listen to the microphone as the audio source
-    print("Say something")
+    print("Heard something")
         
     # # Raw audio recorded as an AudioData object
     # raw_audio = recognizer.listen(source)
@@ -72,7 +65,7 @@ def callback(recognizer, raw_audio):
             respond()
 
             # Check if lights on or lights off was said
-            light_modules.control_lights.read_text(audio_text)
+            control_lights.read_text(audio_text)
     except sr.UnknownValueError:
         # If the audio cannot be converted to text (unrecognized), skip
         pass
