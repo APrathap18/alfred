@@ -1,5 +1,5 @@
-import modules.control_lights as control_lights
-import modules.listen as listen
+import light_modules.control_lights as control_lights
+import light_modules.listen as listen
 import speech_recognition as sr
 import time
 

@@ -1,2 +1,5 @@
-# lumos
-Voice-activated smart plug with raspberry pi to turn lights on and off
+# alfred
+Alfred is a voice assistant for my college room. 
+
+Currently, it only has a voice activated light system that turns the lights on and off.
+The next step is to integrate a morning report function that reads the time, date, weather, and that days events for me and my roommate.
