@@ -2,6 +2,9 @@ import datetime
 import os.path
 from tzlocal import get_localzone
 
+# Got instructions on this file from Google's Python quickstart
+# https://developers.google.com/workspace/calendar/api/quickstart/python
+
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -69,16 +72,20 @@ def start_scheduler():
             )
             .execute()
         )
+
+        # event is a list of event dictionaries
         events = events_result.get("items", [])
 
         if not events:
             print("No upcoming events")
-            return
+            return []
             
         # Prints start and name of next 10 events
         for event in events:
             start = event['start'].get("dateTime", event['start'].get('date'))
-            print(start, event['summary'])
+            print(start)
+        
+        return events
 
     except HttpError as error:
         print(f"An error occurred: {error}")
