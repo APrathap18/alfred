@@ -5,6 +5,14 @@ import threading
 import whisper
 import morning_modules.scheduler as scheduler
 import morning_modules.wakeup as wakeup
+import pyttsx3
+
+# TTS engine
+engine = pyttsx3.init()
+
+# Makes the speech slower
+newVoiceRate = 120
+engine.setProperty('rate', newVoiceRate)
 
 # Speech-to-text model
 # Using base due to RAM limitations on Pi
@@ -32,20 +40,28 @@ def start_listening():
         stop_listening(wait_for_stop = False)
         print('Listening stopped')
 
+def speak_all():
+    wakeup.speak_intro(engine)
+    time.sleep(1)
+    wakeup.speak_datetime(engine)
+    time.sleep(1)
+    wakeup.speak_weather(engine)
+    time.sleep(1)
+    wakeup.speak_events(engine)
+
 if __name__ == "__main__":
+    events = scheduler.start_scheduler()
+
+    speak_all()
+    
     # Creates a listening thread that runs in the background
     # Daemon makes it so the thread stops when the main program stops
     listen_thread = threading.Thread(target = start_listening, daemon=True)
 
-    # Creates a thread to continously check the schedule for upcoming events
-    # start_scheduler is a reference, not a function call
-    scheduler_thread = threading.Thread(target = scheduler.start_scheduler, daemon = True)
-
-    # Start both threads
+    # Start the thread
     listen_thread.start()
-    scheduler_thread.start()
-
-    # Keep both threads going
+    
+    # Keep the thread going
     try:
         while True:
             time.sleep(0.5)
@@ -55,6 +71,5 @@ if __name__ == "__main__":
 
         # Stops both threads
         listen_thread.join()
-        scheduler_thread.join()
         
 
