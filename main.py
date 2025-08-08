@@ -16,7 +16,7 @@ engine.setProperty('rate', newVoiceRate)
 
 # Speech-to-text model
 # Using base due to RAM limitations on Pi
-model = whisper.load_model("base")
+model = whisper.load_model('base')
 
 def start_listening():
     # Recognizer and mic instances handle recording, capturing, and processing audio
@@ -41,35 +41,39 @@ def start_listening():
         print('Listening stopped')
 
 def speak_all():
-    wakeup.speak_intro(engine)
-    time.sleep(1)
-    wakeup.speak_datetime(engine)
-    time.sleep(1)
-    wakeup.speak_weather(engine)
-    time.sleep(1)
-    wakeup.speak_events(engine)
+    # wakeup.speak_intro(engine)
+    # time.sleep(1)
+    # wakeup.speak_datetime(engine)
+    # time.sleep(1)
+    # wakeup.speak_weather(engine)
+    # time.sleep(1)
+    # wakeup.speak_events(engine)
+    # time.sleep(1)
+    wakeup.speak_news(engine)
 
 if __name__ == "__main__":
-    events = scheduler.start_scheduler()
+    #events = scheduler.start_scheduler()
 
     speak_all()
     
+    engine.runAndWait()
+
     # Creates a listening thread that runs in the background
     # Daemon makes it so the thread stops when the main program stops
-    listen_thread = threading.Thread(target = start_listening, daemon=True)
+    #listen_thread = threading.Thread(target = start_listening, daemon=True)
 
     # Start the thread
-    listen_thread.start()
+    #listen_thread.start()
     
     # Keep the thread going
-    try:
-        while True:
-            time.sleep(0.5)
-    except KeyboardInterrupt:
-        # Stops the program if interrupted
-        print("Ending program")
+    # try:
+    #     while True:
+    #         time.sleep(0.5)
+    # except KeyboardInterrupt:
+    #     # Stops the program if interrupted
+    #     print("Ending program")
 
-        # Stops both threads
-        listen_thread.join()
+    #     # Stops both threads
+    #     listen_thread.join()
         
 

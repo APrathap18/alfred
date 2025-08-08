@@ -8,6 +8,8 @@ import requests
 # From https://www.weatherapi.com/
 WEATHER_API_KEY = 'bfa0780246834c6c891201958250708'
 
+NEWS_API_KEY = 'pub_118052e76bd94f4d9bb592499bfeff84'
+
 def speak_events(engine):
     # Gets upcoming events
     events = scheduler.start_scheduler()
@@ -154,5 +156,30 @@ def speak_weather(engine):
 
     engine.say(weather_string)
 
+def speak_news(engine):
+    url = f'https://newsdata.io/api/1/latest?apikey={NEWS_API_KEY}&country=us&prioritydomain=top'
+
+    response = requests.get(url)
+    news_data = response.json()
+
+    articles = news_data.get('results', [])
+
+    relevant_categories = {'politics', 'world', 'business', 'science', 'technology'}
+    
+    # All stories matching one of the relevant categories
+    filtered_stories = [
+        article for article in articles
+        if article.get('category') and article['category'][0].lower() in relevant_categories
+    ]
+    
+    # First five stories
+    for i, story in enumerate(filtered_stories[:5]):
+        title = story.get('title', 'No Title')
+        description = story.get('description', 'No Description')
+        
+        print(f"\nStory {i + 1}: {title}")
+
+        engine.say(title)
+
 if __name__ == "__main__":
-    speak_weather()
+    speak_news()
